@@ -4,6 +4,7 @@
 
 [![Built with Gemini 3 Pro](https://img.shields.io/badge/Built%20with-Gemini%203%20Pro-blue)](https://ai.google.dev/)
 [![Google AI Studio](https://img.shields.io/badge/Platform-Google%20AI%20Studio-green)](https://aistudio.google.com/)
+[![YouTube](https://img.shields.io/youtube/views/9rVT2XtRWvs)](https://youtu.be/9rVT2XtRWvs)
 
 ---
 
