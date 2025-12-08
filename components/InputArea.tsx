@@ -34,7 +34,7 @@ const InputArea: React.FC<InputAreaProps> = ({ onSend, isLoading, disabled }) =>
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const files: File[] = Array.from(e.target.files);
-      
+
       files.forEach(file => {
         const reader = new FileReader();
         reader.onloadend = () => {
@@ -71,12 +71,12 @@ const InputArea: React.FC<InputAreaProps> = ({ onSend, isLoading, disabled }) =>
           {attachments.map((att, idx) => (
             <div key={idx} className="relative group shrink-0">
               {att.mimeType.startsWith('image/') ? (
-                <div className="w-16 h-16 rounded-lg overflow-hidden border border-slate-600">
+                <div className="w-16 h-16 rounded-lg overflow-hidden border border-dark-border">
                   <img src={att.data} alt="preview" className="w-full h-full object-cover" />
                 </div>
               ) : (
-                <div className="w-16 h-16 rounded-lg bg-slate-800 border border-slate-600 flex items-center justify-center">
-                  <span className="text-xs text-slate-400">FILE</span>
+                <div className="w-16 h-16 rounded-lg bg-dark-surface border border-dark-border flex items-center justify-center">
+                  <span className="text-xs text-dark-muted">FILE</span>
                 </div>
               )}
               <button
@@ -91,13 +91,12 @@ const InputArea: React.FC<InputAreaProps> = ({ onSend, isLoading, disabled }) =>
       )}
 
       {/* Input Bar */}
-      <div className={`relative flex items-end gap-2 bg-slate-800 p-3 rounded-2xl border transition-colors ${
-        disabled ? 'border-slate-700 opacity-50' : 'border-slate-600 focus-within:border-indigo-500'
-      }`}>
+      <div className={`relative flex items-end gap-2 bg-dark-surface p-3 rounded-2xl border transition-colors ${disabled ? 'border-dark-border opacity-50' : 'border-dark-border focus-within:border-brand'
+        }`}>
         <button
           onClick={() => fileInputRef.current?.click()}
           disabled={disabled || isLoading}
-          className="p-2 text-slate-400 hover:text-indigo-400 transition-colors rounded-lg hover:bg-slate-700"
+          className="p-2 text-dark-muted hover:text-brand transition-colors rounded-lg hover:bg-dark-border"
           title="Attach image or code"
         >
           <Paperclip size={20} />
@@ -118,26 +117,25 @@ const InputArea: React.FC<InputAreaProps> = ({ onSend, isLoading, disabled }) =>
           onKeyDown={handleKeyDown}
           disabled={disabled || isLoading}
           placeholder={disabled ? "Connecting..." : "Describe your problem, paste code, or upload an image..."}
-          className="flex-1 bg-transparent text-slate-100 placeholder-slate-500 text-sm md:text-base resize-none outline-none max-h-[200px] py-2"
+          className="flex-1 bg-transparent text-dark-text placeholder-dark-muted text-sm md:text-base resize-none outline-none max-h-[200px] py-2"
           rows={1}
         />
 
         <button
           onClick={handleSend}
           disabled={(!text.trim() && attachments.length === 0) || isLoading || disabled}
-          className={`p-2 rounded-lg transition-all ${
-            (!text.trim() && attachments.length === 0) || isLoading || disabled
-              ? 'bg-slate-700 text-slate-500 cursor-not-allowed'
-              : 'bg-indigo-600 text-white hover:bg-indigo-500 shadow-lg shadow-indigo-500/20'
-          }`}
+          className={`p-2 rounded-lg transition-all ${(!text.trim() && attachments.length === 0) || isLoading || disabled
+            ? 'bg-dark-border text-dark-muted cursor-not-allowed'
+            : 'bg-brand text-white hover:bg-brand-hover shadow-lg shadow-brand/20'
+            }`}
         >
           <Send size={20} />
         </button>
       </div>
       <div className="text-center mt-2">
-         <p className="text-xs text-slate-500">
-           CodeSensei may produce inaccurate information. Verify code before execution.
-         </p>
+        <p className="text-xs text-dark-muted">
+          ThinkForces may produce inaccurate information. Verify code before execution.
+        </p>
       </div>
     </div>
   );

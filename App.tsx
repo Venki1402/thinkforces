@@ -12,7 +12,7 @@ const App: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  
+
   // Initial welcome message
   useEffect(() => {
     setMessages([{
@@ -59,7 +59,7 @@ const App: React.FC = () => {
 
       for await (const chunk of stream) {
         fullResponse += chunk;
-        setMessages(prev => prev.map(msg => 
+        setMessages(prev => prev.map(msg =>
           msg.id === botMessageId ? { ...msg, text: fullResponse } : msg
         ));
       }
@@ -106,10 +106,10 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="flex h-screen bg-slate-950 text-slate-100 font-sans overflow-hidden selection:bg-indigo-500/30">
-      
+    <div className="flex h-screen bg-dark-bg text-dark-text font-sans overflow-hidden selection:bg-brand/30">
+
       {/* Sidebar */}
-      <Sidebar 
+      <Sidebar
         onClearChat={handleClearChat}
         onModeSelect={handleModeSelect}
         isOpen={sidebarOpen}
@@ -118,15 +118,15 @@ const App: React.FC = () => {
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col h-full relative">
-        
+
         {/* Mobile Header */}
-        <div className="md:hidden flex items-center justify-between p-4 border-b border-slate-800 bg-slate-900/80 backdrop-blur">
+        <div className="md:hidden flex items-center justify-between p-4 border-b border-dark-border bg-dark-surface/80 backdrop-blur">
           <div className="flex items-center gap-2">
-            <span className="font-bold text-lg text-indigo-400">CodeSensei</span>
+            <span className="font-bold text-lg text-brand">ThinkForces</span>
           </div>
-          <button 
+          <button
             onClick={() => setSidebarOpen(true)}
-            className="p-2 text-slate-400 hover:text-white"
+            className="p-2 text-dark-muted hover:text-white"
           >
             <Menu size={24} />
           </button>
@@ -139,10 +139,10 @@ const App: React.FC = () => {
               <MessageBubble key={msg.id} message={msg} />
             ))}
             {isLoading && (
-              <div className="flex items-center gap-2 text-slate-500 text-sm ml-12 animate-pulse">
-                <div className="w-2 h-2 bg-indigo-500 rounded-full animate-bounce" style={{ animationDelay: '0ms' }}/>
-                <div className="w-2 h-2 bg-indigo-500 rounded-full animate-bounce" style={{ animationDelay: '150ms' }}/>
-                <div className="w-2 h-2 bg-indigo-500 rounded-full animate-bounce" style={{ animationDelay: '300ms' }}/>
+              <div className="flex items-center gap-2 text-dark-muted text-sm ml-12 animate-pulse">
+                <div className="w-2 h-2 bg-brand rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+                <div className="w-2 h-2 bg-brand rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+                <div className="w-2 h-2 bg-brand rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
                 <span>Sensei is thinking...</span>
               </div>
             )}
@@ -151,10 +151,10 @@ const App: React.FC = () => {
         </div>
 
         {/* Input Area */}
-        <div className="border-t border-slate-800 bg-slate-900/50 backdrop-blur-sm p-4">
-          <InputArea 
-            onSend={handleSendMessage} 
-            isLoading={isLoading} 
+        <div className="border-t border-dark-border bg-dark-surface/50 backdrop-blur-sm p-4">
+          <InputArea
+            onSend={handleSendMessage}
+            isLoading={isLoading}
             disabled={false}
           />
         </div>
