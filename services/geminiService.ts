@@ -3,16 +3,19 @@ import { Message, Role, Attachment } from "../types";
 import { GEMINI_MODEL, SYSTEM_INSTRUCTION } from "../constants";
 
 // Get API key from environment - Vite exposes it via process.env.API_KEY
-const apiKey = process.env.API_KEY || process.env.GEMINI_API_KEY;
+const envApiKey = process.env.API_KEY || process.env.GEMINI_API_KEY;
+let customApiKey = localStorage.getItem('gemini_api_key');
 
-if (!apiKey) {
+const getApiKey = () => customApiKey || envApiKey;
+
+if (!getApiKey()) {
   console.error(
-    "GEMINI_API_KEY is not set. Please create a .env.local file with GEMINI_API_KEY=your_key"
+    "GEMINI_API_KEY is not set. Please create a .env.local file with GEMINI_API_KEY=your_key or set it in the UI."
   );
 }
 
 // Initialize using process.env.API_KEY directly as per guidelines
-const genAI = new GoogleGenAI({ apiKey: apiKey || "" });
+let genAI = new GoogleGenAI({ apiKey: getApiKey() || "" });
 
 let chatSession: Chat | null = null;
 
@@ -31,11 +34,15 @@ const isRateLimitError = (error: any): boolean => {
 };
 
 const createChatSession = () => {
-  if (!apiKey) {
+  const key = getApiKey();
+  if (!key) {
     throw new Error(
-      "API key is not configured. Please set GEMINI_API_KEY in your .env.local file."
+      "API key is not configured. Please set GEMINI_API_KEY in your .env.local file or in the settings."
     );
   }
+
+  // Re-instantiate genAI if key changed (though we usually do it in setCustomApiKey)
+  genAI = new GoogleGenAI({ apiKey: key });
 
   return genAI.chats.create({
     model: GEMINI_MODEL,
@@ -48,23 +55,35 @@ const createChatSession = () => {
 
 // Initialize session immediately (will throw if API key is missing)
 try {
-  chatSession = createChatSession();
+  if (getApiKey()) {
+    chatSession = createChatSession();
+  }
 } catch (error) {
   console.error("Failed to initialize Gemini chat session:", error);
 }
 
+export const setCustomApiKey = (key: string) => {
+  customApiKey = key;
+  localStorage.setItem('gemini_api_key', key);
+  initializeGemini();
+};
+
 export const initializeGemini = () => {
   // Re-initialize logic if needed.
-  chatSession = createChatSession();
+  try {
+    chatSession = createChatSession();
+  } catch (e) {
+    console.error("Failed to re-initialize session", e);
+  }
 };
 
 export const sendMessageStream = async function* (
   text: string,
   attachments: Attachment[] = []
 ): AsyncGenerator<string, void, unknown> {
-  if (!apiKey) {
+  if (!getApiKey()) {
     throw new Error(
-      "API key is not configured. Please set GEMINI_API_KEY in your .env.local file."
+      "API key is not configured. Please set GEMINI_API_KEY in your .env.local file or in the settings."
     );
   }
 
